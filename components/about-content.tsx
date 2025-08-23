@@ -49,7 +49,7 @@ export function AboutContent() {
           </ScrollAnimation>
           <ScrollAnimation direction="right">
             <div className="space-y-6 flex flex-col justify-center">
-              <div>
+              <div className="max-w-md mx-auto lg:mx-0 lg:pr-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Company Overview</h3>
                 <p className="text-gray-600 leading-relaxed mb-6">
                   {t("about.company.description")}
