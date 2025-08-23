@@ -128,15 +128,6 @@ export function ContactForm() {
           {/* Contact Form */}
           <ScrollAnimation direction="right">
             <Card className="shadow-xl relative overflow-hidden border-2 border-gray-200">
-              {/* Background Image - Make it more visible */}
-              <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
-                style={{
-                  backgroundImage: `url('/images/contactformular/support-team.jpg')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center center'
-                }}
-              />
               {/* White overlay to maintain readability */}
               <div className="absolute inset-0 bg-white/75"></div>
               <div className="relative z-10">
