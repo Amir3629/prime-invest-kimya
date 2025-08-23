@@ -1,0 +1,341 @@
+I need to implement a contact form email system for my Next.js website. Here are the requirements:
+
+**Current Setup:**
+- Next.js 15 app with app router
+- Contact forms and quote request forms
+- Need emails to be sent to client's email address
+
+**Requirements:**
+1. Use Gmail SMTP for sending emails
+2. No client credentials exposed in frontend
+3. Centralized email management
+4. Direct forwarding to client's email
+5. Professional HTML email templates
+6. Vercel-compatible serverless functions
+
+**Gmail Account Details:**
+- Gmail: [INSERT_GMAIL_ADDRESS]
+- App Password: [INSERT_16_CHAR_APP_PASSWORD]
+- Client Email: [INSERT_CLIENT_EMAIL]
+
+**What I need:**
+1. Create `/app/api/send-email/route.ts` API endpoint using nodemailer
+2. Update contact form component to use the API
+3. Update quote modal component to use the API
+4. Add proper error handling and validation
+5. Create professional HTML email templates
+6. Add environment variables setup
+7. Test endpoint at `/api/test-env`
+
+**Technical Details:**
+- Use nodemailer with Gmail SMTP
+- Import: `import * as nodemailer from 'nodemailer'`
+- Support both 'contact' and 'quote' form types
+- Include reply-to functionality
+- Add proper TypeScript types
+- Handle environment variables securely
+
+**Email Template Requirements:**
+- Professional HTML formatting
+- Company branding colors
+- Contact details section
+- Message content section
+- Timestamp and source tracking
+- Responsive design
+
+**Dependencies to add:**
+- nodemailer@^6.9.8
+- @types/nodemailer@^6.4.14
+
+Please provide the complete code for all files needed and step-by-step implementation instructions.
+
+## 📁 **File 1: `.env.local`**
+
+
+
+```env
+GMAIL_USER=[website-gmail-address]@gmail.com
+GMAIL_APP_PASSWORD=[16-character-app-password]
+CLIENT_EMAIL=[client-email-address]
+```
+
+## �� **File 2: `app/api/send-email/route.ts`**
+
+Create this file
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server'
+import * as nodemailer from 'nodemailer'
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { name, email, phone, message, type = 'contact' } = body
+
+    // Debug: Log environment variables (remove in production)
+    console.log('Environment check:', {
+      GMAIL_USER: process.env.GMAIL_USER ? 'Set' : 'Missing',
+      GMAIL_APP_PASSWORD: process.env.GMAIL_APP_PASSWORD ? 'Set' : 'Missing',
+      CLIENT_EMAIL: process.env.CLIENT_EMAIL ? 'Set' : 'Missing',
+    })
+
+    // Validate required fields
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+
+    // Validate environment variables
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD || !process.env.CLIENT_EMAIL) {
+      console.error('Missing environment variables')
+      return NextResponse.json(
+        { error: 'Email configuration error' },
+        { status: 500 }
+      )
+    }
+
+    // Create transporter using Gmail
+    const transporter = nodemailer.createTransporter({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    })
+
+    // Email content based on type
+    let subject = ''
+    let htmlContent = ''
+
+    if (type === 'contact') {
+      subject = `New Contact Form Submission from ${name}`
+      htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #F59524; border-bottom: 2px solid #F59524; padding-bottom: 10px;">
+            New Contact Form Submission
+          </h2>
+          
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Contact Details:</h3>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+          </div>
+          
+          <div style="background-color: #fff; padding: 20px; border: 1px solid #dee2e6; border-radius: 8px;">
+            <h3 style="margin-top: 0;">Message:</h3>
+            <p style="line-height: 1.6;">${message}</p>
+          </div>
+          
+          <div style="margin-top: 20px; padding: 15px; background-color: #e8f4fd; border-radius: 8px; border-left: 4px solid #F59524;">
+            <p style="margin: 0; font-size: 14px; color: #666;">
+              This email was sent from the website contact form on ${new Date().toLocaleDateString()}.
+            </p>
+          </div>
+        </div>
+      `
+    } else if (type === 'quote') {
+      const { product, quantity, delivery, timeline, company } = body
+      subject = `New Quote Request for ${product} from ${company}`
+      htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #F59524; border-bottom: 2px solid #F59524; padding-bottom: 10px;">
+            New Quote Request
+          </h2>
+          
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Company & Contact Details:</h3>
+            <p><strong>Company:</strong> ${company || 'Not provided'}</p>
+            <p><strong>Contact Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+          </div>
+          
+          <div style="background-color: #fff; padding: 20px; border: 1px solid #dee2e6; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Product Details:</h3>
+            <p><strong>Product:</strong> ${product || 'Not specified'}</p>
+            <p><strong>Quantity:</strong> ${quantity || 'Not specified'} MT</p>
+            <p><strong>Delivery Location:</strong> ${delivery || 'Not specified'}</p>
+            <p><strong>Timeline:</strong> ${timeline || 'Not specified'}</p>
+          </div>
+          
+          ${message ? `
+          <div style="background-color: #fff; padding: 20px; border: 1px solid #dee2e6; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Additional Message:</h3>
+            <p style="line-height: 1.6;">${message}</p>
+          </div>
+          ` : ''}
+          
+          <div style="margin-top: 20px; padding: 15px; background-color: #e8f4fd; border-radius: 8px; border-left: 4px solid #F59524;">
+            <p style="margin: 0; font-size: 14px; color: #666;">
+              This quote request was sent from the website on ${new Date().toLocaleDateString()}.
+            </p>
+          </div>
+        </div>
+      `
+    }
+
+    // Email options
+    const mailOptions = {
+      from: process.env.GMAIL_USER,
+      to: process.env.CLIENT_EMAIL,
+      subject: subject,
+      html: htmlContent,
+      replyTo: email, // Allow direct reply to the customer
+    }
+
+    console.log('Attempting to send email...')
+    
+    // Send email
+    const result = await transporter.sendMail(mailOptions)
+    
+    console.log('Email sent successfully:', result.messageId)
+
+    return NextResponse.json({ success: true, message: 'Email sent successfully' })
+  } catch (error) {
+    console.error('Detailed error sending email:', error)
+    return NextResponse.json(
+      { error: 'Failed to send email', details: error.message },
+      { status: 500 }
+    )
+  }
+}
+```
+
+## �� **File 3: `app/api/test-env/route.ts`**
+
+Create this file for testing:
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function GET(request: NextRequest) {
+  try {
+    const envCheck = {
+      GMAIL_USER: process.env.GMAIL_USER ? '✅ Set' : '❌ Missing',
+      GMAIL_APP_PASSWORD: process.env.GMAIL_APP_PASSWORD ? '✅ Set' : '❌ Missing',
+      CLIENT_EMAIL: process.env.CLIENT_EMAIL ? '✅ Set' : '❌ Missing',
+    }
+
+    return NextResponse.json({
+      message: 'Environment Variables Check',
+      environment: envCheck,
+      timestamp: new Date().toISOString()
+    })
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Test failed', details: error },
+      { status: 500 }
+    )
+  }
+}
+```
+
+## �� **File 4: Update `package.json`**
+
+Add these dependencies to each project's `package.json`:
+
+```json
+{
+  "dependencies": {
+    "nodemailer": "^6.9.8"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.14"
+  }
+}
+```
+
+## 📁 **File 5: Update Contact Form Component**
+
+For each website, update the contact form component to use the API:
+
+```typescript
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setIsSubmitting(true)
+
+  try {
+    const response = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...formData,
+        type: 'contact'
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to send email')
+    }
+
+    setShowConfirmation(true)
+    setFormData({ name: "", phone: "", email: "", message: "" })
+  } catch (error) {
+    console.error('Error sending form:', error)
+    alert('Failed to send message. Please try again.')
+  } finally {
+    setIsSubmitting(false)
+  }
+}
+```
+
+## 📁 **File 6: Update Quote Modal Component**
+
+For each website, update the quote modal component:
+
+```typescript
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setIsSubmitting(true)
+
+  try {
+    const response = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...formData,
+        type: 'quote'
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to send email')
+    }
+
+    onClose()
+    setShowConfirmation(true)
+    setFormData({
+      product: "",
+      quantity: "",
+      delivery: "",
+      timeline: "",
+      company: "",
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+    })
+  } catch (error) {
+    console.error('Error sending quote request:', error)
+    alert('Failed to send quote request. Please try again.')
+  } finally {
+    setIsSubmitting(false)
+  }
+}
+```
+
+
+| Variable Name | Value |
+|---------------|-------|
+| `GMAIL_USER` | `[meljazzberlin@gmail.com
+` |
+| `GMAIL_APP_PASSWORD` | `nfdv ewgw amad wxpm
+` |
+| `CLIENT_EMAIL` | `[info@melanie-wainwright.de]` |
