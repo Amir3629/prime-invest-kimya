@@ -192,7 +192,7 @@ export function AboutContent() {
                   <CardTitle className="text-xl text-white">{t("about.transparency.title")}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1">
-                  <p className="text-gray-100 leading-relaxed text-base">
+                  <p className="text-gray-100 leading-relaxed text-lg">
                     {t("about.transparency.text")}
                   </p>
                 </CardContent>
@@ -215,7 +215,7 @@ export function AboutContent() {
                   <CardTitle className="text-lg md:text-xl text-white">{t("about.ethics.title")}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 overflow-hidden">
-                  <p className="text-gray-100 leading-relaxed text-base break-words">
+                  <p className="text-gray-100 leading-relaxed text-lg break-words">
                     {t("about.ethics.text")}
                   </p>
                 </CardContent>
