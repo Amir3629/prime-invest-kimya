@@ -185,13 +185,14 @@ export function AboutContent() {
                   backgroundImage: `url('/images/about us/Business Transparency.png')`,
                 }}
               />
-              <div className="absolute inset-0 bg-black/60"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#94DEA5]/20 via-[#2d9d5a]/15 to-[#198c43]/10"></div>
+              <div className="absolute inset-0 bg-black/40"></div>
               <div className="relative z-10 h-full flex flex-col">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-xl text-white">{t("about.transparency.title")}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1">
-                  <p className="text-gray-200 leading-relaxed text-sm">
+                  <p className="text-gray-100 leading-relaxed text-base">
                     {t("about.transparency.text")}
                   </p>
                 </CardContent>
@@ -207,13 +208,14 @@ export function AboutContent() {
                   backgroundImage: `url('/images/about us/Code of Ethics.png')`,
                 }}
               />
-              <div className="absolute inset-0 bg-black/60"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#94DEA5]/20 via-[#2d9d5a]/15 to-[#198c43]/10"></div>
+              <div className="absolute inset-0 bg-black/40"></div>
               <div className="relative z-10 h-full flex flex-col">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg md:text-xl text-white">{t("about.ethics.title")}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 overflow-hidden">
-                  <p className="text-gray-200 leading-relaxed text-xs md:text-sm break-words">
+                  <p className="text-gray-100 leading-relaxed text-base break-words">
                     {t("about.ethics.text")}
                   </p>
                 </CardContent>
