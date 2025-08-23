@@ -132,7 +132,7 @@ export function AboutContent() {
               <div
                 className="w-full h-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url('/images/bacgkground/aboutt.png')`,
+                  backgroundImage: `url('/images/my philosopy.png')`,
                 }}
               />
             </div>
