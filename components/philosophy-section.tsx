@@ -14,7 +14,7 @@ export function PhilosophySection() {
             <div
               className="w-full h-80 bg-cover bg-center rounded-2xl shadow-lg"
               style={{
-                backgroundImage: `url('/placeholder.svg?height=600&width=800')`,
+                backgroundImage: `url('/images/my philosopy.png')`,
               }}
             />
           </div>
