@@ -36,7 +36,7 @@ export function UreaSection() {
           <div
             className="w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage: `url('/images/sustainable-agriculture.png')`,
+              backgroundImage: `url('/images/bacgkround/aboutt.png')`,
             }}
           />
         </div>

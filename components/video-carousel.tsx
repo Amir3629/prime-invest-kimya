@@ -13,9 +13,9 @@ export function VideoCarousel() {
   const [currentVideo, setCurrentVideo] = useState<HTMLVideoElement | null>(null)
 
   const videos = [
-    { src: "/videos/2.mp4" }, // First video is now 2.mp4
-    { src: "/videos/1.mp4" }, // Second video is 1.mp4
-    { src: "/videos/3.mp4" }, // Third video is 3.mp4
+    { src: "/Videos/2.mp4" }, // First video is now 2.mp4
+    { src: "/Videos/1.mp4" }, // Second video is 1.mp4
+    { src: "/Videos/3.mp4" }, // Third video is 3.mp4
   ]
 
   useEffect(() => {

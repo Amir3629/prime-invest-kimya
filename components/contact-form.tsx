@@ -90,7 +90,7 @@ export function ContactForm() {
         <div
           className="w-full h-full bg-cover bg-center"
           style={{
-            backgroundImage: `url('/images/port-logistics.png')`,
+            backgroundImage: `url('/images/bacgkground/contact.png')`,
           }}
         />
       </div>
