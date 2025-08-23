@@ -35,7 +35,7 @@ export function AboutContent() {
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         {/* Company Story */}
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid lg:grid-cols-2 gap-12 mb-16 lg:ml-16 xl:ml-24">
           <ScrollAnimation direction="left">
             <div className="space-y-6">
               <h2 className="text-3xl font-bold text-[#198c43] mb-6 text-shadow-green color-transition">{t("about.story")}</h2>
